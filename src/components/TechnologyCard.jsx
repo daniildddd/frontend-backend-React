@@ -13,13 +13,13 @@ function TechnologyCard({ id, title, description, status, onStatusChange }) {
 	const getStatusIcon = () => {
 		switch (status) {
 			case 'completed':
-				return '[Done]'
+				return '✅'
 			case 'in-progress':
-				return '[In Progress]'
+				return '⚙️'
 			case 'not-started':
-				return '[Not Started]'
+				return '📌'
 			default:
-				return '[?]'
+				return '❓'
 		}
 	}
 
