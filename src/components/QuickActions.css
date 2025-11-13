@@ -64,6 +64,34 @@
 	box-shadow: 0 4px 12px rgba(156, 39, 176, 0.3);
 }
 
+.quick-action-btn--export {
+	background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
+	color: white;
+}
+
+.quick-action-btn--export:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+}
+
+.modal-close-btn {
+	padding: 10px 20px;
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	color: white;
+	border: none;
+	border-radius: 6px;
+	font-size: 14px;
+	font-weight: 500;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	margin-top: 16px;
+}
+
+.modal-close-btn:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
 /* Адаптивность */
 @media (max-width: 768px) {
 	.quick-actions {
