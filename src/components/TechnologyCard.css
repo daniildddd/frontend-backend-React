@@ -63,28 +63,33 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	width: 32px;
-	height: 32px;
-	border-radius: 50%;
+	min-width: 40px;
+	height: auto;
+	padding: 6px 10px;
+	border-radius: 20px;
 	font-weight: bold;
-	font-size: 18px;
+	font-size: 12px;
 	flex-shrink: 0;
+	white-space: nowrap;
 }
 
 .technology-card__icon--completed {
 	background: #4caf50;
 	color: white;
+	border: 1px solid #2e7d32;
 }
 
 .technology-card__icon--in-progress {
 	background: #2196f3;
 	color: white;
-	animation: rotate 2s linear infinite;
+	border: 1px solid #1565c0;
+	animation: pulse 1.5s ease-in-out infinite;
 }
 
 .technology-card__icon--not-started {
 	background: #9e9e9e;
 	color: white;
+	border: 1px solid #616161;
 }
 
 /* Описание */
@@ -131,12 +136,17 @@
 }
 
 /* Анимация для в процессе */
-@keyframes rotate {
-	from {
-		transform: rotate(0deg);
+@keyframes pulse {
+	0% {
+		opacity: 1;
+		box-shadow: 0 0 0 0 rgba(33, 150, 243, 0.7);
 	}
-	to {
-		transform: rotate(360deg);
+	50% {
+		opacity: 0.9;
+	}
+	100% {
+		opacity: 1;
+		box-shadow: 0 0 0 8px rgba(33, 150, 243, 0);
 	}
 }
 

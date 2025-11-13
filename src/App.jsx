@@ -8,13 +8,8 @@ import TechnologyNotes from './components/TechnologyNotes'
 import './App.css'
 
 function App() {
-	const {
-		technologies,
-		setTechnologies,
-		updateStatus,
-		updateNotes,
-		progress,
-	} = useTechnologies()
+	const { technologies, setTechnologies, updateStatus, updateNotes, progress } =
+		useTechnologies()
 
 	const [filter, setFilter] = React.useState('all')
 	const [searchQuery, setSearchQuery] = React.useState('')

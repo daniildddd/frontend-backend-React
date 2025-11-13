@@ -5,7 +5,7 @@ function Modal({ isOpen, onClose, title, children }) {
 		return null
 	}
 
-	const handleBackgroundClick = (event) => {
+	const handleBackgroundClick = event => {
 		if (event.target === event.currentTarget) {
 			onClose()
 		}
