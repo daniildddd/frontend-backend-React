@@ -1,7 +1,14 @@
 import React from 'react'
 import './TechnologyCard.css'
 
-function TechnologyCard({ id, title, description, status }) {
+function TechnologyCard({ id, title, description, status, onStatusChange }) {
+	// Обработчик клика для изменения статуса
+	const handleClick = () => {
+		if (onStatusChange) {
+			onStatusChange(id)
+		}
+	}
+
 	// Условное отображение иконок и статусов
 	const getStatusIcon = () => {
 		switch (status) {
@@ -30,7 +37,10 @@ function TechnologyCard({ id, title, description, status }) {
 	}
 
 	return (
-		<div className={`technology-card technology-card--${status}`}>
+		<div
+			className={`technology-card technology-card--${status}`}
+			onClick={handleClick}
+		>
 			<div className='technology-card__header'>
 				<span
 					className={`technology-card__status-icon technology-card__icon--${status}`}

@@ -1,0 +1,87 @@
+.quick-actions {
+	margin-bottom: 40px;
+	padding: 24px;
+	background: linear-gradient(
+		135deg,
+		rgba(102, 126, 234, 0.1) 0%,
+		rgba(118, 75, 162, 0.1) 100%
+	);
+	border-radius: 12px;
+	border: 1px solid rgba(102, 126, 234, 0.2);
+}
+
+.quick-actions__title {
+	font-size: 18px;
+	font-weight: 600;
+	color: #333;
+	margin-bottom: 16px;
+}
+
+.quick-actions__buttons {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+}
+
+.quick-action-btn {
+	padding: 12px 24px;
+	border: none;
+	border-radius: 8px;
+	font-size: 14px;
+	font-weight: 500;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	white-space: nowrap;
+}
+
+.quick-action-btn--complete {
+	background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+	color: white;
+}
+
+.quick-action-btn--complete:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.quick-action-btn--reset {
+	background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+	color: white;
+}
+
+.quick-action-btn--reset:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+}
+
+.quick-action-btn--random {
+	background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);
+	color: white;
+}
+
+.quick-action-btn--random:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(156, 39, 176, 0.3);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+	.quick-actions {
+		padding: 16px;
+	}
+
+	.quick-actions__title {
+		font-size: 16px;
+	}
+
+	.quick-actions__buttons {
+		flex-direction: column;
+		gap: 8px;
+	}
+
+	.quick-action-btn {
+		width: 100%;
+		padding: 10px 16px;
+		font-size: 13px;
+	}
+}

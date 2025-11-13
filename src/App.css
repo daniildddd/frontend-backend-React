@@ -71,6 +71,47 @@ body {
 	margin-bottom: 30px;
 }
 
+/* Фильтры */
+.app__filters {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+	margin-bottom: 30px;
+	padding-bottom: 20px;
+	border-bottom: 2px solid #e0e0e0;
+}
+
+.filter-btn {
+	padding: 10px 20px;
+	border: 2px solid #ddd;
+	border-radius: 25px;
+	background: white;
+	color: #333;
+	font-size: 14px;
+	font-weight: 500;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+	border-color: #667eea;
+	color: #667eea;
+}
+
+.filter-btn--active {
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	color: white;
+	border-color: transparent;
+}
+
+/* Сообщение об отсутствии результатов */
+.app__no-results {
+	text-align: center;
+	color: #999;
+	padding: 40px 20px;
+	font-size: 16px;
+}
+
 /* Футер */
 .app__footer {
 	background: #f9f9f9;
@@ -107,6 +148,15 @@ body {
 	.app__cards-grid {
 		grid-template-columns: 1fr;
 		gap: 16px;
+	}
+
+	.app__filters {
+		gap: 10px;
+	}
+
+	.filter-btn {
+		padding: 8px 16px;
+		font-size: 13px;
 	}
 }
 
