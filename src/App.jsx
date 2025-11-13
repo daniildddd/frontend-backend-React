@@ -15,9 +15,16 @@ function App() {
 	const [searchQuery, setSearchQuery] = React.useState('')
 	const [selectedTech, setSelectedTech] = React.useState(null)
 
-	// Функция для изменения статуса технологии
+	// Функция для изменения статуса технологии (циклит через статусы)
 	const updateTechnologyStatus = id => {
-		updateStatus(id)
+		const tech = technologies.find(t => t.id === id)
+		if (!tech) return
+
+		const statusCycle = ['not-started', 'in-progress', 'completed']
+		const currentIndex = statusCycle.indexOf(tech.status)
+		const nextStatus = statusCycle[(currentIndex + 1) % statusCycle.length]
+
+		updateStatus(id, nextStatus)
 	}
 
 	// Функция для обновления заметок технологии

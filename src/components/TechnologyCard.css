@@ -63,14 +63,15 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	min-width: 40px;
+	min-width: 50px;
 	height: auto;
-	padding: 6px 10px;
-	border-radius: 20px;
-	font-weight: bold;
-	font-size: 12px;
+	padding: 8px 12px;
+	border-radius: 6px;
+	font-weight: 600;
+	font-size: 11px;
 	flex-shrink: 0;
 	white-space: nowrap;
+	text-align: center;
 }
 
 .technology-card__icon--completed {
