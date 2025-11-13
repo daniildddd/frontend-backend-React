@@ -28,25 +28,25 @@ function QuickActions({
 					className='quick-action-btn quick-action-btn--complete'
 					onClick={onMarkAllComplete}
 				>
-					✅ Отметить все как завершённые
+					Mark All Complete
 				</button>
 				<button
 					className='quick-action-btn quick-action-btn--reset'
 					onClick={onResetAll}
 				>
-					🔄 Сбросить все
+					Reset All
 				</button>
 				<button
 					className='quick-action-btn quick-action-btn--random'
 					onClick={onRandomNext}
 				>
-					🎲 Случайный прогресс
+					Random Progress
 				</button>
 				<button
 					className='quick-action-btn quick-action-btn--export'
 					onClick={handleExport}
 				>
-					📥 Экспорт данных
+					Export Data
 				</button>
 			</div>
 			<Modal

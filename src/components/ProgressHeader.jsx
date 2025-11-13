@@ -22,22 +22,22 @@ function ProgressHeader({ technologies }) {
 			<div className='progress-header__stats'>
 				<div className='stat-card stat-card--total'>
 					<div className='stat-card__number'>{totalCount}</div>
-					<div className='stat-card__label'>📚 Всего технологий</div>
+					<div className='stat-card__label'>Total Technologies</div>
 				</div>
 
 				<div className='stat-card stat-card--completed'>
 					<div className='stat-card__number'>{completedCount}</div>
-					<div className='stat-card__label'>✅ Изучено</div>
+					<div className='stat-card__label'>Completed</div>
 				</div>
 
 				<div className='stat-card stat-card--in-progress'>
 					<div className='stat-card__number'>{inProgressCount}</div>
-					<div className='stat-card__label'>⚙️ В процессе</div>
+					<div className='stat-card__label'>In Progress</div>
 				</div>
 
 				<div className='stat-card stat-card--not-started'>
 					<div className='stat-card__number'>{notStartedCount}</div>
-					<div className='stat-card__label'>📌 Не начато</div>
+					<div className='stat-card__label'>Not Started</div>
 				</div>
 			</div>
 
