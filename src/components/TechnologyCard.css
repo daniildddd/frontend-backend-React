@@ -1,0 +1,156 @@
+.technology-card {
+	border: 2px solid #e0e0e0;
+	border-radius: 8px;
+	padding: 20px;
+	margin-bottom: 16px;
+	transition: all 0.3s ease;
+	background: #ffffff;
+	min-height: 200px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+/* Стили для разных статусов */
+.technology-card--completed {
+	border-left: 5px solid #4caf50;
+	background: #f1f8f5;
+}
+
+.technology-card--completed:hover {
+	box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
+	transform: translateY(-2px);
+}
+
+.technology-card--in-progress {
+	border-left: 5px solid #2196f3;
+	background: #f0f7ff;
+}
+
+.technology-card--in-progress:hover {
+	box-shadow: 0 4px 12px rgba(33, 150, 243, 0.2);
+	transform: translateY(-2px);
+}
+
+.technology-card--not-started {
+	border-left: 5px solid #9e9e9e;
+	background: #fafafa;
+}
+
+.technology-card--not-started:hover {
+	box-shadow: 0 4px 12px rgba(158, 158, 158, 0.2);
+	transform: translateY(-2px);
+}
+
+/* Заголовок карточки */
+.technology-card__header {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin-bottom: 12px;
+}
+
+.technology-card__title {
+	font-size: 20px;
+	font-weight: 600;
+	margin: 0;
+	color: #333;
+}
+
+/* Статус иконка */
+.technology-card__status-icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	font-weight: bold;
+	font-size: 18px;
+	flex-shrink: 0;
+}
+
+.technology-card__icon--completed {
+	background: #4caf50;
+	color: white;
+}
+
+.technology-card__icon--in-progress {
+	background: #2196f3;
+	color: white;
+	animation: rotate 2s linear infinite;
+}
+
+.technology-card__icon--not-started {
+	background: #9e9e9e;
+	color: white;
+}
+
+/* Описание */
+.technology-card__description {
+	margin: 0 0 12px 0;
+	font-size: 14px;
+	color: #666;
+	line-height: 1.5;
+	flex-grow: 1;
+}
+
+/* Footer с бейджем статуса */
+.technology-card__footer {
+	display: flex;
+	justify-content: flex-start;
+}
+
+.technology-card__status-badge {
+	display: inline-block;
+	padding: 6px 12px;
+	border-radius: 20px;
+	font-size: 12px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+.technology-card__badge--completed {
+	background: #c8e6c9;
+	color: #1b5e20;
+	border: 1px solid #4caf50;
+}
+
+.technology-card__badge--in-progress {
+	background: #bbdefb;
+	color: #1a237e;
+	border: 1px solid #2196f3;
+}
+
+.technology-card__badge--not-started {
+	background: #e0e0e0;
+	color: #424242;
+	border: 1px solid #9e9e9e;
+}
+
+/* Анимация для в процессе */
+@keyframes rotate {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+	.technology-card {
+		padding: 16px;
+		min-height: 180px;
+	}
+
+	.technology-card__title {
+		font-size: 18px;
+	}
+
+	.technology-card__description {
+		font-size: 13px;
+	}
+}
