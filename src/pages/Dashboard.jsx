@@ -1,77 +1,124 @@
-import React from 'react'
-import './Dashboard.css'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-
-const getUserData = () => ({
-	username: localStorage.getItem('username') || 'Пользователь',
-	progress: 75,
-	technologiesCompleted: 15,
-	technologiesTotal: 20,
-	newNotifications: 3,
-})
+import './Dashboard.css'
 
 function Dashboard() {
-	const userData = getUserData()
+	const [technologies, setTechnologies] = useState([])
+	const [username, setUsername] = useState('')
+
+	useEffect(() => {
+		// Загружаем данные пользователя
+		const user = localStorage.getItem('username') || 'Пользователь'
+		setUsername(user)
+
+		// Загружаем технологии
+		const saved = localStorage.getItem('technologies')
+		if (saved) {
+			setTechnologies(JSON.parse(saved))
+		}
+	}, [])
+
+	// Статистика
+	const stats = {
+		total: technologies.length,
+		completed: technologies.filter(t => t.status === 'completed').length,
+		inProgress: technologies.filter(t => t.status === 'in-progress').length,
+		notStarted: technologies.filter(t => t.status === 'not-started').length,
+	}
+
+	const progress =
+		stats.total > 0 ? Math.round((stats.completed / stats.total) * 100) : 0
+
+	// Последние добавленные технологии
+	const recentTechnologies = technologies.slice(-3).reverse()
 
 	return (
-		<div className='dashboard-container'>
-			<h1>👋 Привет, {userData.username}!</h1>
+		<div className='page dashboard-page'>
+			<h1> Привет, {username}!</h1>
 			<p className='dashboard-subtitle'>
-				Ваш центр управления и прогресса в изучении технологий.
+				Добро пожаловать в панель управления технологиями
 			</p>
 
-			<div className='dashboard-grid'>
-				<div className='widget progress-widget'>
-					<h3>Общий Прогресс</h3>
-					<div className='progress-bar-wrapper'>
-						<div
-							className='progress-fill'
-							style={{ width: `${userData.progress}%` }}
-						>
-							{userData.progress}%
-						</div>
+			{/* Прогресс */}
+			<div className='progress-widget'>
+				<h2>Общий прогресс</h2>
+				<div className='progress-bar-large'>
+					<div
+						className='progress-fill-large'
+						style={{ width: `${progress}%` }}
+					>
+						<span>{progress}%</span>
 					</div>
-					<p>
-						Изучено {userData.technologiesCompleted} из{' '}
-						{userData.technologiesTotal} технологий.
-					</p>
-					<Link to='/statistics' className='widget-link'>
-						Подробная статистика →
-					</Link>
 				</div>
+				<p className='progress-text'>
+					Изучено {stats.completed} из {stats.total} технологий
+				</p>
+			</div>
 
-				<div className='widget recent-technologies-widget'>
-					<h3>Новые в трекере</h3>
-					<ul>
-						<li>
-							<Link to='/technologies/1'>Vite 7.0</Link>
-						</li>
-						<li>
-							<Link to='/technologies/2'>React 19 Hooks</Link>
-						</li>
-						<li>
-							<Link to='/technologies/3'>PostgreSQL 16</Link>
-						</li>
-					</ul>
-					<Link to='/technologies' className='widget-link'>
-						Все технологии →
-					</Link>
+			{/* Статистика */}
+			<div className='stats-grid-dashboard'>
+				<div className='stat-card-dashboard total'>
+					<div className='stat-icon'></div>
+					<div className='stat-value'>{stats.total}</div>
+					<div className='stat-label'>Всего технологий</div>
 				</div>
+				<div className='stat-card-dashboard completed'>
+					<div className='stat-icon'></div>
+					<div className='stat-value'>{stats.completed}</div>
+					<div className='stat-label'>Завершено</div>
+				</div>
+				<div className='stat-card-dashboard progress'>
+					<div className='stat-icon'></div>
+					<div className='stat-value'>{stats.inProgress}</div>
+					<div className='stat-label'>В процессе</div>
+				</div>
+				<div className='stat-card-dashboard not-started'>
+					<div className='stat-icon'></div>
+					<div className='stat-value'>{stats.notStarted}</div>
+					<div className='stat-label'>Не начато</div>
+				</div>
+			</div>
 
-				<div className='widget notifications-widget'>
-					<h3>Уведомления</h3>
-					{userData.newNotifications > 0 ? (
-						<p className='notification-alert'>
-							📬 У вас {userData.newNotifications} новых уведомлений!
-						</p>
-					) : (
-						<p>✅ Уведомлений нет.</p>
-					)}
-					<Link to='/settings' className='widget-link'>
-						Настройки уведомлений →
+			{/* Быстрые действия */}
+			<div className='quick-actions'>
+				<h2>Быстрые действия</h2>
+				<div className='action-buttons'>
+					<Link to='/add-technology' className='action-button add'>
+						Добавить технологию
+					</Link>
+					<Link to='/technologies' className='action-button view'>
+						Посмотреть все
+					</Link>
+					<Link to='/bulk-edit' className='action-button edit'>
+						Массовое редактирование
+					</Link>
+					<Link to='/import-export' className='action-button import'>
+						Импорт/Экспорт
 					</Link>
 				</div>
 			</div>
+
+			{/* Последние технологии */}
+			{recentTechnologies.length > 0 && (
+				<div className='recent-technologies'>
+					<h2>Недавно добавленные</h2>
+					<div className='recent-list'>
+						{recentTechnologies.map(tech => (
+							<Link
+								key={tech.id}
+								to={`/technology/${tech.id}`}
+								className='recent-item'
+							>
+								<h3>{tech.title}</h3>
+								<p>{tech.description}</p>
+								<span className={`status status-${tech.status}`}>
+									{tech.status}
+								</span>
+							</Link>
+						))}
+					</div>
+				</div>
+			)}
 		</div>
 	)
 }

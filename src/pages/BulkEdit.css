@@ -1,0 +1,285 @@
+.bulk-edit-page {
+	max-width: 900px;
+	margin: 0 auto;
+}
+
+.subtitle {
+	color: #666;
+	margin-bottom: 30px;
+}
+
+/* Панель управления */
+.bulk-controls {
+	background: #f9f9f9;
+	padding: 20px;
+	border-radius: 12px;
+	margin-bottom: 24px;
+	border: 2px solid #e0e0e0;
+}
+
+.selection-info {
+	margin-bottom: 16px;
+}
+
+.select-all-checkbox {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-weight: 600;
+	cursor: pointer;
+	font-size: 15px;
+}
+
+.select-all-checkbox input[type='checkbox'] {
+	width: 20px;
+	height: 20px;
+	cursor: pointer;
+}
+
+.bulk-actions {
+	display: flex;
+	gap: 12px;
+	flex-wrap: wrap;
+	align-items: center;
+}
+
+.bulk-actions select {
+	padding: 10px 16px;
+	border: 2px solid #ddd;
+	border-radius: 8px;
+	font-size: 14px;
+	background: white;
+	cursor: pointer;
+	min-width: 200px;
+}
+
+.bulk-actions select:focus {
+	outline: none;
+	border-color: #667eea;
+	box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.btn-apply,
+.btn-delete {
+	padding: 10px 20px;
+	border: none;
+	border-radius: 8px;
+	font-size: 14px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.btn-apply {
+	background: #4caf50;
+	color: white;
+}
+
+.btn-apply:hover:not(:disabled) {
+	background: #45a049;
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.btn-apply:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+.btn-delete {
+	background: #e74c3c;
+	color: white;
+}
+
+.btn-delete:hover {
+	background: #c0392b;
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+}
+
+/* Список технологий */
+.technologies-list {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.technology-item {
+	background: white;
+	border: 2px solid #e0e0e0;
+	border-radius: 12px;
+	padding: 16px;
+	transition: all 0.3s ease;
+}
+
+.technology-item:hover {
+	border-color: #667eea;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.technology-item.selected {
+	border-color: #667eea;
+	background: #f0f4ff;
+}
+
+.technology-checkbox {
+	display: flex;
+	gap: 16px;
+	cursor: pointer;
+	width: 100%;
+}
+
+.technology-checkbox input[type='checkbox'] {
+	width: 20px;
+	height: 20px;
+	cursor: pointer;
+	flex-shrink: 0;
+	margin-top: 4px;
+}
+
+.technology-info {
+	flex: 1;
+}
+
+.technology-info h3 {
+	font-size: 18px;
+	margin-bottom: 8px;
+	color: #333;
+}
+
+.technology-info p {
+	font-size: 14px;
+	color: #666;
+	margin-bottom: 12px;
+}
+
+.status {
+	display: inline-block;
+	padding: 6px 12px;
+	border-radius: 20px;
+	font-size: 12px;
+	font-weight: 600;
+	text-transform: uppercase;
+}
+
+.status-not-started {
+	background: #f0f0f0;
+	color: #666;
+}
+
+.status-in-progress {
+	background: #fff3cd;
+	color: #856404;
+}
+
+.status-completed {
+	background: #d4edda;
+	color: #155724;
+}
+
+/* Модальное окно */
+.modal-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.5);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 1000;
+}
+
+.modal-content {
+	background: white;
+	padding: 30px;
+	border-radius: 12px;
+	max-width: 500px;
+	width: 90%;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content h2 {
+	margin-bottom: 16px;
+	color: #333;
+}
+
+.modal-content p {
+	margin-bottom: 24px;
+	color: #666;
+	font-size: 15px;
+}
+
+.modal-actions {
+	display: flex;
+	gap: 12px;
+}
+
+.btn-confirm,
+.btn-cancel {
+	flex: 1;
+	padding: 12px 24px;
+	border: none;
+	border-radius: 8px;
+	font-size: 14px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.btn-confirm {
+	background: #667eea;
+	color: white;
+}
+
+.btn-confirm:hover {
+	background: #5568d3;
+	transform: translateY(-2px);
+}
+
+.btn-cancel {
+	background: white;
+	color: #666;
+	border: 2px solid #ddd;
+}
+
+.btn-cancel:hover {
+	background: #f5f5f5;
+	border-color: #999;
+}
+
+/* Скрытый текст для скринридеров */
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border-width: 0;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+	.bulk-actions {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.bulk-actions select,
+	.btn-apply,
+	.btn-delete {
+		width: 100%;
+	}
+
+	.technology-checkbox {
+		flex-direction: column;
+	}
+
+	.modal-actions {
+		flex-direction: column;
+	}
+}

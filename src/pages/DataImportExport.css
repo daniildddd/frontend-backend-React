@@ -1,0 +1,263 @@
+.data-import-export {
+	max-width: 1000px;
+	margin: 0 auto;
+}
+
+.subtitle {
+	color: #666;
+	margin-bottom: 30px;
+}
+
+/* Статусное сообщение */
+.status-message {
+	background: #4caf50;
+	color: white;
+	padding: 16px 24px;
+	border-radius: 8px;
+	margin-bottom: 24px;
+	font-weight: 600;
+	box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+	animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+	from {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* Кнопки управления */
+.controls {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: 16px;
+	margin-bottom: 32px;
+}
+
+.controls button,
+.file-input-label {
+	padding: 16px 24px;
+	border: none;
+	border-radius: 8px;
+	font-size: 15px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	text-align: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+}
+
+.btn-export {
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	color: white;
+}
+
+.btn-export:hover:not(:disabled) {
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.btn-export:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+.file-input-label {
+	background: #4caf50;
+	color: white;
+}
+
+.file-input-label:hover {
+	background: #45a049;
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+}
+
+.btn-save {
+	background: #ff9800;
+	color: white;
+}
+
+.btn-save:hover:not(:disabled) {
+	background: #f57c00;
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(255, 152, 0, 0.4);
+}
+
+.btn-save:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+.btn-load {
+	background: #2196f3;
+	color: white;
+}
+
+.btn-load:hover {
+	background: #1976d2;
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(33, 150, 243, 0.4);
+}
+
+/* Область drag-and-drop */
+.drop-zone {
+	border: 3px dashed #ddd;
+	border-radius: 12px;
+	padding: 60px 40px;
+	text-align: center;
+	background: #f9f9f9;
+	transition: all 0.3s ease;
+	margin-bottom: 32px;
+}
+
+.drop-zone p {
+	font-size: 18px;
+	color: #666;
+	margin: 0;
+	font-weight: 600;
+}
+
+.drop-zone-hint {
+	font-size: 14px !important;
+	color: #999 !important;
+	font-weight: 400 !important;
+	margin-top: 8px !important;
+}
+
+.drop-zone.dragging {
+	border-color: #667eea;
+	background: #f0f4ff;
+	transform: scale(1.02);
+}
+
+.drop-zone.dragging p {
+	color: #667eea;
+}
+
+/* Список технологий */
+.technologies-list h2 {
+	margin-bottom: 24px;
+	color: #333;
+}
+
+.technologies-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	gap: 20px;
+}
+
+.tech-card {
+	background: white;
+	border: 2px solid #e0e0e0;
+	border-radius: 12px;
+	padding: 20px;
+	transition: all 0.3s ease;
+}
+
+.tech-card:hover {
+	border-color: #667eea;
+	transform: translateY(-4px);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.tech-card h3 {
+	font-size: 20px;
+	margin-bottom: 12px;
+	color: #333;
+}
+
+.tech-description {
+	font-size: 14px;
+	color: #666;
+	margin-bottom: 16px;
+	line-height: 1.5;
+}
+
+.tech-meta {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 10px;
+}
+
+.tech-category {
+	display: inline-block;
+	padding: 6px 12px;
+	background: #f0f0f0;
+	border-radius: 20px;
+	font-size: 12px;
+	font-weight: 600;
+	color: #666;
+	text-transform: capitalize;
+}
+
+.status {
+	display: inline-block;
+	padding: 6px 12px;
+	border-radius: 20px;
+	font-size: 12px;
+	font-weight: 600;
+	text-transform: uppercase;
+}
+
+.status-not-started {
+	background: #f0f0f0;
+	color: #666;
+}
+
+.status-in-progress {
+	background: #fff3cd;
+	color: #856404;
+}
+
+.status-completed {
+	background: #d4edda;
+	color: #155724;
+}
+
+/* Пустое состояние */
+.empty-state {
+	text-align: center;
+	padding: 60px 20px;
+	background: #f9f9f9;
+	border-radius: 12px;
+}
+
+.empty-state p {
+	font-size: 18px;
+	color: #999;
+	margin-bottom: 8px;
+}
+
+.empty-state .hint {
+	font-size: 14px;
+	color: #bbb;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+	.controls {
+		grid-template-columns: 1fr;
+	}
+
+	.drop-zone {
+		padding: 40px 20px;
+	}
+
+	.drop-zone p {
+		font-size: 16px;
+	}
+
+	.technologies-grid {
+		grid-template-columns: 1fr;
+	}
+}

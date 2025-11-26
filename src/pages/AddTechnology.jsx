@@ -1,23 +1,17 @@
-import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import TechnologyForm from '../components/TechnologyForm'
 
 function AddTechnology() {
-	const [title, setTitle] = useState('')
-	const [description, setDescription] = useState('')
-	const navigate = useNavigate() // Используем хук для навигации
+	const navigate = useNavigate()
 
-	const handleSubmit = e => {
-		e.preventDefault()
-
-		// Генерируем уникальный ID (простой способ для примера)
+	const handleSave = formData => {
+		// Генерируем уникальный ID
 		const newId = Date.now()
 
 		const newTechnology = {
 			id: newId,
-			title,
-			description,
+			...formData,
 			status: 'not-started', // Начальный статус
-			notes: '', // Пустые заметки
 		}
 
 		// Загружаем существующие данные
@@ -28,40 +22,17 @@ function AddTechnology() {
 		technologies.push(newTechnology)
 		localStorage.setItem('technologies', JSON.stringify(technologies))
 
-		alert(`Технология "${title}" успешно добавлена!`)
+		// Перенаправляем на страницу со списком
+		navigate('/technologies')
+	}
 
-		// Перенаправляем пользователя на страницу со списком
+	const handleCancel = () => {
 		navigate('/technologies')
 	}
 
 	return (
 		<div className='page'>
-			<h1>Добавить новую технологию</h1>
-			<form onSubmit={handleSubmit} className='add-form'>
-				<div className='form-group'>
-					<label htmlFor='title'>Название технологии:</label>
-					<input
-						id='title'
-						type='text'
-						value={title}
-						onChange={e => setTitle(e.target.value)}
-						required
-					/>
-				</div>
-				<div className='form-group'>
-					<label htmlFor='description'>Краткое описание:</label>
-					<textarea
-						id='description'
-						value={description}
-						onChange={e => setDescription(e.target.value)}
-						required
-						rows='4'
-					/>
-				</div>
-				<button type='submit' className='btn btn-primary'>
-					Сохранить технологию
-				</button>
-			</form>
+			<TechnologyForm onSave={handleSave} onCancel={handleCancel} />
 		</div>
 	)
 }
