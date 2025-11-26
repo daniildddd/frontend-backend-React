@@ -1,24 +1,22 @@
+// src/pages/Technologies.jsx
+import React, { useState, useEffect } from 'react'
+import { Container, Typography, Button, Grid, Box, Chip } from '@mui/material'
 import { Link, useNavigate } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import SimpleTechCard from '../components/SimpleTechCard'
 
-function TechnologyList() {
+export default function Technologies() {
 	const [technologies, setTechnologies] = useState([])
 	const navigate = useNavigate()
 
-	// Загружаем технологии из localStorage
 	useEffect(() => {
 		const saved = localStorage.getItem('technologies')
-		if (saved) {
-			setTechnologies(JSON.parse(saved))
-		}
+		if (saved) setTechnologies(JSON.parse(saved))
 	}, [])
 
-	// Функция для циклического изменения статуса при клике на карточку
 	const handleCardClick = techId => {
 		const statusCycle = ['not-started', 'in-progress', 'completed']
-
-		setTechnologies(prevTechnologies => {
-			const updatedTechnologies = prevTechnologies.map(tech => {
+		setTechnologies(prev => {
+			const updated = prev.map(tech => {
 				if (tech.id === techId) {
 					const currentIndex = statusCycle.indexOf(tech.status)
 					const nextStatus =
@@ -27,20 +25,16 @@ function TechnologyList() {
 				}
 				return tech
 			})
-
-			// Сохраняем в localStorage
-			localStorage.setItem('technologies', JSON.stringify(updatedTechnologies))
-			return updatedTechnologies
+			localStorage.setItem('technologies', JSON.stringify(updated))
+			return updated
 		})
 	}
 
-	// Переход к деталям при клике на ссылку
 	const handleDetailsClick = (e, techId) => {
-		e.stopPropagation() // Останавливаем всплытие, чтобы не изменять статус
+		e.stopPropagation()
 		navigate(`/technology/${techId}`)
 	}
 
-	// Получаем читаемое название статуса
 	const getStatusLabel = status => {
 		const labels = {
 			'not-started': 'Не начато',
@@ -51,53 +45,88 @@ function TechnologyList() {
 	}
 
 	return (
-		<div className='page'>
-			<div className='page-header'>
-				<h1>Все технологии</h1>
-				<Link to='/add-technology' className='btn btn-primary'>
+		<Container maxWidth='lg' sx={{ py: 4 }}>
+			<Box
+				sx={{
+					display: 'flex',
+					justifyContent: 'space-between',
+					alignItems: 'center',
+					mb: 4,
+				}}
+			>
+				<Typography variant='h4'>Все технологии</Typography>
+				<Button
+					component={Link}
+					to='/add-technology'
+					variant='contained'
+					size='large'
+				>
 					+ Добавить технологию
-				</Link>
-			</div>
+				</Button>
+			</Box>
 
-			<p style={{ marginBottom: '20px', color: '#666', fontSize: '14px' }}>
-				Совет: Кликните на карточку для изменения статуса
-			</p>
+			<Typography variant='body2' color='text.secondary' sx={{ mb: 3 }}>
+				Кликните на карточку для изменения статуса
+			</Typography>
 
-			<div className='technologies-grid'>
-				{technologies.map(tech => (
-					<div
-						key={tech.id}
-						className='technology-item technology-item-clickable'
-						onClick={() => handleCardClick(tech.id)}
-						title='Кликните для изменения статуса'
+			{technologies.length === 0 ? (
+				<Box sx={{ textAlign: 'center', py: 8 }}>
+					<Typography variant='h6' color='text.secondary'>
+						Технологий пока нет.
+					</Typography>
+					<Button
+						component={Link}
+						to='/add-technology'
+						variant='contained'
+						sx={{ mt: 2 }}
 					>
-						<h3>{tech.title}</h3>
-						<p>{tech.description}</p>
-						<div className='technology-meta'>
-							<span className={`status status-${tech.status}`}>
-								{getStatusLabel(tech.status)}
-							</span>
-							<span
-								className='btn-link'
-								onClick={e => handleDetailsClick(e, tech.id)}
-							>
-								Подробнее →
-							</span>
-						</div>
-					</div>
-				))}
-			</div>
-
-			{technologies.length === 0 && (
-				<div className='empty-state'>
-					<p>Технологий пока нет.</p>
-					<Link to='/add-technology' className='btn btn-primary'>
 						Добавить первую технологию
-					</Link>
-				</div>
+					</Button>
+				</Box>
+			) : (
+				<Grid container spacing={3}>
+					{technologies.map(tech => (
+						<Grid item xs={12} sm={6} md={4} key={tech.id}>
+							<Box
+								onClick={() => handleCardClick(tech.id)}
+								sx={{
+									cursor: 'pointer',
+									transition: 'all 0.2s',
+									'&:hover': { transform: 'translateY(-4px)' },
+								}}
+							>
+								<SimpleTechCard {...tech} onStatusChange={handleCardClick} />
+								<Box
+									sx={{
+										mt: 1,
+										display: 'flex',
+										justifyContent: 'space-between',
+										alignItems: 'center',
+									}}
+								>
+									<Chip
+										label={getStatusLabel(tech.status)}
+										size='small'
+										color={
+											tech.status === 'completed'
+												? 'success'
+												: tech.status === 'in-progress'
+												? 'warning'
+												: 'default'
+										}
+									/>
+									<Button
+										size='small'
+										onClick={e => handleDetailsClick(e, tech.id)}
+									>
+										Подробнее →
+									</Button>
+								</Box>
+							</Box>
+						</Grid>
+					))}
+				</Grid>
 			)}
-		</div>
+		</Container>
 	)
 }
-
-export default TechnologyList

@@ -1,111 +1,100 @@
 import { Link, useLocation } from 'react-router-dom'
+import { Switch, FormControlLabel, Box } from '@mui/material'
 
-function Navigation({ isLoggedIn, username, onLogout }) {
+function Navigation({ isLoggedIn, username, onLogout, toggleTheme, darkMode }) {
 	const location = useLocation()
-
-	const isLinkActive = path => location.pathname === path
+	const isActive = path => location.pathname === path
 
 	return (
-		<nav className='main-navigation'>
-			<div className='nav-brand'>
-				<Link to='/'>
-					<h2> Трекер технологий</h2>
-				</Link>
-			</div>
-			<ul className='nav-menu'>
-				<li>
-					<Link to='/' className={isLinkActive('/') ? 'active' : ''}>
-						Главная
+		<Box sx={{ bgcolor: 'background.paper', boxShadow: 1, mb: 4 }}>
+			<Box
+				sx={{
+					display: 'flex',
+					justifyContent: 'space-between',
+					alignItems: 'center',
+					p: 2,
+				}}
+			>
+				{/* Лого */}
+				<Box>
+					<Link to='/' style={{ textDecoration: 'none', color: 'inherit' }}>
+						<h2>Трекер технологий</h2>
 					</Link>
-				</li>
-				<li>
-					<Link to='/about' className={isLinkActive('/about') ? 'active' : ''}>
-						О проекте
-					</Link>
-				</li>
+				</Box>
 
-				{/* Показываем эти ссылки только авторизованным пользователям */}
-				{isLoggedIn && (
-					<>
-						<li>
+				{/* Навигация */}
+				<Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+					{isLoggedIn && (
+						<>
 							<Link
 								to='/dashboard'
-								className={isLinkActive('/dashboard') ? 'active' : ''}
+								className={isActive('/dashboard') ? 'active' : ''}
 							>
 								Панель
 							</Link>
-						</li>
-						<li>
+
 							<Link
 								to='/technologies'
-								className={isLinkActive('/technologies') ? 'active' : ''}
+								className={isActive('/technologies') ? 'active' : ''}
 							>
 								Технологии
 							</Link>
-						</li>
-						<li>
+
 							<Link
 								to='/add-technology'
-								className={isLinkActive('/add-technology') ? 'active' : ''}
+								className={isActive('/add-technology') ? 'active' : ''}
 							>
 								Добавить
 							</Link>
-						</li>
-						<li>
-							<Link
-								to='/bulk-edit'
-								className={isLinkActive('/bulk-edit') ? 'active' : ''}
-							>
-								Массовое ред.
-							</Link>
-						</li>
-						<li>
+
 							<Link
 								to='/statistics'
-								className={isLinkActive('/statistics') ? 'active' : ''}
+								className={isActive('/statistics') ? 'active' : ''}
 							>
 								Статистика
 							</Link>
-						</li>
-						<li>
+
+							<Link
+								to='/bulk-edit'
+								className={isActive('/bulk-edit') ? 'active' : ''}
+							>
+								Массовое редактирование
+							</Link>
+
 							<Link
 								to='/import-export'
-								className={isLinkActive('/import-export') ? 'active' : ''}
+								className={isActive('/import-export') ? 'active' : ''}
 							>
 								Импорт/Экспорт
 							</Link>
-						</li>
-						<li>
+
 							<Link
 								to='/settings'
-								className={isLinkActive('/settings') ? 'active' : ''}
+								className={isActive('/settings') ? 'active' : ''}
 							>
 								Настройки
 							</Link>
-						</li>
-					</>
-				)}
+						</>
+					)}
 
-				{/* Кнопка входа/выхода */}
-				{isLoggedIn ? (
-					<li className='user-menu'>
-						<span className='username'> {username}</span>
-						<button onClick={onLogout} className='logout-btn'>
-							Выйти
-						</button>
-					</li>
-				) : (
-					<li>
-						<Link
-							to='/login'
-							className={`login-link ${isLinkActive('/login') ? 'active' : ''}`}
-						>
-							Войти
-						</Link>
-					</li>
-				)}
-			</ul>
-		</nav>
+					{/* Тёмная тема */}
+					<FormControlLabel
+						control={<Switch checked={darkMode} onChange={toggleTheme} />}
+						label='Тёмная тема'
+					/>
+
+					{/* Логин/Логаут */}
+					{isLoggedIn ? (
+						<Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+							<span>{username}</span>
+							<button onClick={onLogout}>Выйти</button>
+						</Box>
+					) : (
+						<Link to='/login'>Войти</Link>
+					)}
+				</Box>
+			</Box>
+		</Box>
 	)
 }
 

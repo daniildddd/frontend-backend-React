@@ -1,83 +1,116 @@
+// src/pages/TechnologyDetail.jsx
+import React, { useState, useEffect } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
-import { useState, useEffect } from 'react'
-function TechnologyDetail() {
+import {
+	Container,
+	Typography,
+	Button,
+	Box,
+	Paper,
+	Divider,
+} from '@mui/material'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+
+export default function TechnologyDetail() {
 	const { techId } = useParams()
 	const navigate = useNavigate()
 	const [technology, setTechnology] = useState(null)
+
 	useEffect(() => {
 		const saved = localStorage.getItem('technologies')
 		if (saved) {
-			const technologies = JSON.parse(saved)
-			const tech = technologies.find(t => t.id === parseInt(techId))
+			const tech = JSON.parse(saved).find(t => t.id === parseInt(techId))
 			setTechnology(tech)
 		}
 	}, [techId])
+
 	const updateStatus = newStatus => {
 		const saved = localStorage.getItem('technologies')
 		if (saved) {
-			const technologies = JSON.parse(saved)
-			const updated = technologies.map(tech =>
+			const updated = JSON.parse(saved).map(tech =>
 				tech.id === parseInt(techId) ? { ...tech, status: newStatus } : tech
 			)
 			localStorage.setItem('technologies', JSON.stringify(updated))
-			setTechnology({ ...technology, status: newStatus })
+			setTechnology(prev => ({ ...prev, status: newStatus }))
 		}
 	}
+
 	if (!technology) {
 		return (
-			<div className='page'>
-				<h1>Технология не найдена</h1>
-				<p>Технология с ID {techId} не существует.</p>
-				<Link to='/technologies' className='btn'>
-					← Назад к списку
-				</Link>
-			</div>
+			<Container sx={{ py: 8, textAlign: 'center' }}>
+				<Typography variant='h5'>Технология не найдена</Typography>
+				<Button
+					component={Link}
+					to='/technologies'
+					startIcon={<ArrowBackIcon />}
+				>
+					Назад к списку
+				</Button>
+			</Container>
 		)
 	}
+
 	return (
-		<div className='page'>
-			<div className='page-header'>
-				<Link to='/technologies' className='back-link'>
-					← Назад к списку
-				</Link>
-				<h1>{technology.title}</h1>
-			</div>
-			<div className='technology-detail'>
-				<div className='detail-section'>
-					<h3>Описание</h3>
-					<p>{technology.description}</p>
-				</div>
-				<div className='detail-section'>
-					<h3>Статус изучения</h3>
-					<div className='status-buttons'>
-						<button
-							onClick={() => updateStatus('not-started')}
-							className={technology.status === 'not-started' ? 'active' : ''}
+		<Container maxWidth='md' sx={{ py: 4 }}>
+			<Button
+				component={Link}
+				to='/technologies'
+				startIcon={<ArrowBackIcon />}
+				sx={{ mb: 3 }}
+			>
+				Назад к списку
+			</Button>
+
+			<Paper elevation={6} sx={{ p: 4, borderRadius: 3 }}>
+				<Typography variant='h3' gutterBottom>
+					{technology.title}
+				</Typography>
+				<Typography variant='body1' color='text.secondary' paragraph>
+					{technology.description}
+				</Typography>
+
+				<Divider sx={{ my: 3 }} />
+
+				<Typography variant='h6' gutterBottom>
+					Статус изучения
+				</Typography>
+				<Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+					{['not-started', 'in-progress', 'completed'].map(status => (
+						<Button
+							key={status}
+							variant={technology.status === status ? 'contained' : 'outlined'}
+							color={
+								status === 'completed'
+									? 'success'
+									: status === 'in-progress'
+									? 'warning'
+									: 'primary'
+							}
+							onClick={() => updateStatus(status)}
 						>
-							Не начато
-						</button>
-						<button
-							onClick={() => updateStatus('in-progress')}
-							className={technology.status === 'in-progress' ? 'active' : ''}
-						>
-							В процессе
-						</button>
-						<button
-							onClick={() => updateStatus('completed')}
-							className={technology.status === 'completed' ? 'active' : ''}
-						>
-							Завершено
-						</button>
-					</div>
-				</div>
+							{status === 'not-started'
+								? 'Не начато'
+								: status === 'in-progress'
+								? 'В процессе'
+								: 'Завершено'}
+						</Button>
+					))}
+				</Box>
+
 				{technology.notes && (
-					<div className='detail-section'>
-						<h3>Мои заметки</h3>
-						<p>{technology.notes}</p>
-					</div>
+					<>
+						<Typography variant='h6' sx={{ mt: 4 }}>
+							Мои заметки
+						</Typography>
+						<Paper
+							variant='outlined'
+							sx={{ p: 2, bgcolor: 'background.default' }}
+						>
+							<Typography>{technology.notes}</Typography>
+						</Paper>
+					</>
 				)}
-			</div>
-		</div>
+			</Paper>
+		</Container>
 	)
 }
-export default TechnologyDetail

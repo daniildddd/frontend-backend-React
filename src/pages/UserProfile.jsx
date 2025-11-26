@@ -1,43 +1,58 @@
+// src/pages/UserProfile.jsx
+import React from 'react'
 import { useParams, Link } from 'react-router-dom'
-function UserProfile() {
-	// Получаем параметр userId из URL
+import { Container, Typography, Button, Paper, Box } from '@mui/material'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+
+export default function UserProfile() {
 	const { userId } = useParams()
-	// В реальном приложении здесь был бы запрос к API
-	// Сейчас используем mock данные
 	const users = {
 		1: { id: 1, name: 'Анна', role: 'Фронтенд разработчик', progress: 75 },
 		2: { id: 2, name: 'Иван', role: 'Бэкенд разработчик', progress: 60 },
 		3: { id: 3, name: 'Мария', role: 'Fullstack разработчик', progress: 85 },
 	}
 	const user = users[userId]
-	// Если пользователь не найден
+
 	if (!user) {
 		return (
-			<div className='page'>
-				<h1>Пользователь не найден</h1>
-				<p>Пользователь с ID {userId} не существует.</p>
-				<Link to='/'>Вернуться на главную</Link>
-			</div>
+			<Container sx={{ py: 8, textAlign: 'center' }}>
+				<Typography variant='h5' gutterBottom>
+					Пользователь не найден
+				</Typography>
+				<Typography variant='body1' paragraph>
+					Пользователь с ID {userId} не существует.
+				</Typography>
+				<Button
+					component={Link}
+					to='/'
+					variant='outlined'
+					startIcon={<ArrowBackIcon />}
+				>
+					Вернуться на главную
+				</Button>
+			</Container>
 		)
 	}
+
 	return (
-		<div className='page'>
-			<h1>Профиль пользователя</h1>
-			<div className='user-info'>
-				<h2>{user.name}</h2>
-				<p>
+		<Container maxWidth='sm' sx={{ py: 4 }}>
+			<Paper elevation={6} sx={{ p: 4, borderRadius: 3 }}>
+				<Typography variant='h4' gutterBottom>
+					Профиль пользователя
+				</Typography>
+				<Typography variant='h5'>{user.name}</Typography>
+				<Typography variant='body1' sx={{ mt: 2 }}>
 					<strong>Должность:</strong> {user.role}
-				</p>
-				<p>
+				</Typography>
+				<Typography variant='body1' sx={{ mt: 1 }}>
 					<strong>Прогресс:</strong> {user.progress}%
-				</p>
-			</div>
-			<div className='user-actions'>
-				<Link to='/' className='back-link'>
-					← Назад к списку
-				</Link>
-			</div>
-		</div>
+				</Typography>
+				<Box sx={{ mt: 4 }}>
+					<Button component={Link} to='/' startIcon={<ArrowBackIcon />}>
+						Назад к списку
+					</Button>
+				</Box>
+			</Paper>
+		</Container>
 	)
 }
-export default UserProfile

@@ -1,8 +1,16 @@
-function Contact() {
+// src/pages/Contact.jsx
+import React from 'react'
+import { Container, Typography } from '@mui/material'
+
+export default function Contact() {
 	return (
-		<div className='page'>
-			<h1>Наши контакты</h1>
-		</div>
+		<Container maxWidth='md' sx={{ py: 4, textAlign: 'center' }}>
+			<Typography variant='h3' gutterBottom>
+				Наши контакты
+			</Typography>
+			<Typography variant='body1'>
+				Свяжитесь с нами по email: support@tracker.com
+			</Typography>
+		</Container>
 	)
 }
-export default Contact

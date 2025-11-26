@@ -1,27 +1,40 @@
+// src/pages/Home.jsx
+import React from 'react'
+import { Container, Typography, Button, Box } from '@mui/material'
 import { Link } from 'react-router-dom'
 
-function Home() {
+export default function Home() {
 	return (
-		<div className='page home-page'>
-			<h1> Добро пожаловать в Трекер Технологий!</h1>
-			<p>
+		<Container maxWidth='md' sx={{ py: 8, textAlign: 'center' }}>
+			<Typography variant='h2' gutterBottom>
+				Добро пожаловать в Трекер Технологий!
+			</Typography>
+			<Typography variant='body1' paragraph>
 				Ваш личный инструмент для отслеживания прогресса в изучении новых
 				фреймворков и библиотек.
-			</p>
-			<div className='home-actions'>
-				<Link to='/technologies' className='btn btn-primary btn-large'>
+			</Typography>
+			<Box sx={{ display: 'flex', justifyContent: 'center', gap: 3, mt: 4 }}>
+				<Button
+					component={Link}
+					to='/technologies'
+					variant='contained'
+					size='large'
+				>
 					Посмотреть мои технологии
-				</Link>
-				<Link to='/add-technology' className='btn btn-secondary btn-large'>
+				</Button>
+				<Button
+					component={Link}
+					to='/add-technology'
+					variant='outlined'
+					size='large'
+				>
 					Начать отслеживание
-				</Link>
-			</div>
-			<p style={{ marginTop: '20px' }}>
-				Это приложение использует **React Router** для быстрой навигации без
+				</Button>
+			</Box>
+			<Typography variant='body2' sx={{ mt: 4 }}>
+				Это приложение использует React Router для быстрой навигации без
 				перезагрузки страницы.
-			</p>
-		</div>
+			</Typography>
+		</Container>
 	)
 }
-
-export default Home

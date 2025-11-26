@@ -1,90 +1,141 @@
-import { useState } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
-import './Login.css'
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import {
+	Container,
+	Paper,
+	TextField,
+	Button,
+	Typography,
+	Box,
+	Alert,
+	InputAdornment,
+	IconButton,
+} from '@mui/material'
+import {
+	Visibility,
+	VisibilityOff,
+	Login as LoginIcon,
+} from '@mui/icons-material'
 
-function Login({ onLogin }) {
-	const [username, setUsername] = useState('')
-	const [password, setPassword] = useState('')
-	const [error, setError] = useState('')
+export default function Login({ onLogin }) {
 	const navigate = useNavigate()
-	const location = useLocation()
 
-	// Получаем URL, с которого пользователь был перенаправлен
-	const from = location.state?.from?.pathname || '/'
+	const [formData, setFormData] = useState({ email: '', password: '' })
+	const [showPassword, setShowPassword] = useState(false)
+	const [error, setError] = useState('')
 
-	const handleSubmit = e => {
-		e.preventDefault()
+	const handleChange = e => {
+		setFormData({ ...formData, [e.target.name]: e.target.value })
 		setError('')
+	}
 
-		// Простая проверка (в реальном приложении это запрос к API)
-		if (username === 'admin' && password === 'password') {
-			// Вызываем колбэк для обновления состояния в App
-			onLogin(username)
-			// Перенаправляем на страницу, с которой пришли, или на главную
-			navigate(from, { replace: true })
+	const handleSubmit = () => {
+		const validEmail = 'admin@example.com'
+		const validPassword = '12345'
+
+		if (formData.email === validEmail && formData.password === validPassword) {
+			onLogin(formData.email) // ← ключевая строка!
+			navigate('/dashboard')
 		} else {
-			setError('Неверное имя пользователя или пароль')
+			setError('Неверный email или пароль')
 		}
 	}
 
 	return (
-		<div className='page login-page'>
-			<div className='login-container'>
-				<h1>🔐 Вход в систему</h1>
-				<p className='login-subtitle'>
-					Войдите для доступа к функциям управления технологиями
-				</p>
+		<Container component='main' maxWidth='xs'>
+			<Box
+				sx={{
+					marginTop: 8,
+					display: 'flex',
+					flexDirection: 'column',
+					alignItems: 'center',
+				}}
+			>
+				<Paper
+					elevation={10}
+					sx={{ padding: 4, width: '100%', borderRadius: 3 }}
+				>
+					<Typography component='h1' variant='h4' align='center' gutterBottom>
+						Вход в систему
+					</Typography>
 
-				{error && (
-					<div className='error-banner' role='alert'>
-						{error}
-					</div>
-				)}
+					{error && (
+						<Alert severity='error' sx={{ mt: 2 }}>
+							{error}
+						</Alert>
+					)}
 
-				<form onSubmit={handleSubmit} className='login-form' noValidate>
-					<div className='form-group'>
-						<label htmlFor='username'>Имя пользователя</label>
-						<input
-							id='username'
-							type='text'
-							value={username}
-							onChange={e => setUsername(e.target.value)}
-							placeholder='admin'
+					<Box sx={{ mt: 3 }}>
+						<TextField
+							margin='normal'
 							required
-							aria-required='true'
-							aria-invalid={!!error}
+							fullWidth
+							label='Email'
+							name='email'
+							autoComplete='email'
+							autoFocus
+							value={formData.email}
+							onChange={handleChange}
+							placeholder='admin@example.com'
 						/>
-					</div>
 
-					<div className='form-group'>
-						<label htmlFor='password'>Пароль</label>
-						<input
-							id='password'
-							type='password'
-							value={password}
-							onChange={e => setPassword(e.target.value)}
-							placeholder='password'
+						<TextField
+							margin='normal'
 							required
-							aria-required='true'
-							aria-invalid={!!error}
+							fullWidth
+							name='password'
+							label='Пароль'
+							type={showPassword ? 'text' : 'password'}
+							value={formData.password}
+							onChange={handleChange}
+							placeholder='12345'
+							InputProps={{
+								endAdornment: (
+									<InputAdornment position='end'>
+										<IconButton
+											onClick={() => setShowPassword(!showPassword)}
+											edge='end'
+										>
+											{showPassword ? <VisibilityOff /> : <Visibility />}
+										</IconButton>
+									</InputAdornment>
+								),
+							}}
 						/>
-					</div>
 
-					<button type='submit' className='btn-login'>
-						Войти
-					</button>
-				</form>
+						<Button
+							fullWidth
+							variant='contained'
+							size='large'
+							startIcon={<LoginIcon />}
+							sx={{ mt: 3, mb: 2, py: 1.8, fontSize: '1.1rem' }}
+							onClick={handleSubmit}
+						>
+							Войти
+						</Button>
+					</Box>
 
-				<div className='login-help'>
-					<p>
-						<strong>Тестовые данные:</strong>
-					</p>
-					<p>Имя пользователя: admin</p>
-					<p>Пароль: password</p>
-				</div>
-			</div>
-		</div>
+					{/* Тестовые данные */}
+					<Box
+						sx={{
+							mt: 4,
+							p: 3,
+							backgroundColor: 'primary.light',
+							color: 'white',
+							borderRadius: 2,
+							textAlign: 'center',
+						}}
+					>
+						<Typography variant='body2'>Введите данные:</Typography>
+						<Typography variant='h6' fontWeight='bold'>
+							admin@example.com
+						</Typography>
+						<Typography variant='h6' fontWeight='bold'>
+							12345
+						</Typography>
+					</Box>
+				</Paper>
+			</Box>
+		</Container>
 	)
 }
-
-export default Login

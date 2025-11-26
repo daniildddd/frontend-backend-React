@@ -1,21 +1,45 @@
-function About() {
+// src/pages/About.jsx
+import React from 'react'
+import {
+	Container,
+	Typography,
+	List,
+	ListItem,
+	ListItemText,
+	Paper,
+} from '@mui/material'
+
+export default function About() {
 	return (
-		<div className='page'>
-			<h1>О нашем приложении</h1>
-			<p>Это учебное приложение создано для изучения React Router.</p>
-			<div className='about-content'>
-				<h2>Наша миссия</h2>
-				<p>
+		<Container maxWidth='md' sx={{ py: 4 }}>
+			<Paper elevation={4} sx={{ p: 4, borderRadius: 3 }}>
+				<Typography variant='h3' component='h1' gutterBottom>
+					О нашем приложении
+				</Typography>
+				<Typography variant='body1' paragraph>
+					Это учебное приложение создано для изучения React Router.
+				</Typography>
+				<Typography variant='h5' sx={{ mt: 4, mb: 2 }}>
+					Наша миссия
+				</Typography>
+				<Typography variant='body1' paragraph>
 					Помогать разработчикам изучать современные технологии веб-разработки.
-				</p>
-				<h2>Технологии</h2>
-				<ul>
-					<li>React</li>
-					<li>React Router</li>
-					<li>JavaScript ES6+</li>
-				</ul>
-			</div>
-		</div>
+				</Typography>
+				<Typography variant='h5' sx={{ mt: 4, mb: 2 }}>
+					Технологии
+				</Typography>
+				<List>
+					<ListItem>
+						<ListItemText primary='React' />
+					</ListItem>
+					<ListItem>
+						<ListItemText primary='React Router' />
+					</ListItem>
+					<ListItem>
+						<ListItemText primary='JavaScript ES6+' />
+					</ListItem>
+				</List>
+			</Paper>
+		</Container>
 	)
 }
-export default About

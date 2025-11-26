@@ -1,24 +1,44 @@
-import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import './Dashboard.css'
+// src/pages/Dashboard.jsx
+import React from 'react'
+import {
+	Box,
+	AppBar,
+	Toolbar,
+	Typography,
+	IconButton,
+	Badge,
+	Tabs,
+	Tab,
+	Grid,
+	Card,
+	CardContent,
+	List,
+	ListItem,
+	ListItemText,
+	LinearProgress,
+} from '@mui/material'
+import {
+	Notifications as NotificationsIcon,
+	CheckCircle as CheckCircleIcon,
+	Schedule as ScheduleIcon,
+	Pending as PendingIcon,
+	TrendingUp as TrendingUpIcon,
+} from '@mui/icons-material'
+import useTechnologies from '../hooks/useTechnologies'
+import SimpleTechCard from '../components/SimpleTechCard'
 
-function Dashboard() {
-	const [technologies, setTechnologies] = useState([])
-	const [username, setUsername] = useState('')
+function TabPanel({ children, value, index }) {
+	return (
+		<div role='tabpanel' hidden={value !== index}>
+			{value === index && <Box sx={{ p: { xs: 2, sm: 3 } }}>{children}</Box>}
+		</div>
+	)
+}
 
-	useEffect(() => {
-		// Загружаем данные пользователя
-		const user = localStorage.getItem('username') || 'Пользователь'
-		setUsername(user)
+export default function Dashboard() {
+	const { technologies, updateStatus } = useTechnologies()
+	const [tabValue, setTabValue] = React.useState(0)
 
-		// Загружаем технологии
-		const saved = localStorage.getItem('technologies')
-		if (saved) {
-			setTechnologies(JSON.parse(saved))
-		}
-	}, [])
-
-	// Статистика
 	const stats = {
 		total: technologies.length,
 		completed: technologies.filter(t => t.status === 'completed').length,
@@ -26,101 +46,106 @@ function Dashboard() {
 		notStarted: technologies.filter(t => t.status === 'not-started').length,
 	}
 
-	const progress =
+	const completionPercentage =
 		stats.total > 0 ? Math.round((stats.completed / stats.total) * 100) : 0
 
-	// Последние добавленные технологии
-	const recentTechnologies = technologies.slice(-3).reverse()
-
 	return (
-		<div className='page dashboard-page'>
-			<h1> Привет, {username}!</h1>
-			<p className='dashboard-subtitle'>
-				Добро пожаловать в панель управления технологиями
-			</p>
+		<Box sx={{ flexGrow: 1, maxWidth: 1200, mx: 'auto', p: { xs: 2, sm: 3 } }}>
+			<AppBar position='static' color='default' elevation={2}>
+				<Toolbar>
+					<Typography variant='h6' sx={{ flexGrow: 1 }}>
+						Панель управления технологиями
+					</Typography>
+					<IconButton color='inherit'>
+						<Badge badgeContent={3} color='error'>
+							<NotificationsIcon />
+						</Badge>
+					</IconButton>
+				</Toolbar>
+			</AppBar>
 
-			{/* Прогресс */}
-			<div className='progress-widget'>
-				<h2>Общий прогресс</h2>
-				<div className='progress-bar-large'>
-					<div
-						className='progress-fill-large'
-						style={{ width: `${progress}%` }}
-					>
-						<span>{progress}%</span>
-					</div>
-				</div>
-				<p className='progress-text'>
-					Изучено {stats.completed} из {stats.total} технологий
-				</p>
-			</div>
+			<Tabs
+				value={tabValue}
+				onChange={(_, v) => setTabValue(v)}
+				centered
+				sx={{ mt: 3 }}
+			>
+				<Tab label='Обзор' />
+				<Tab label='Технологии' />
+			</Tabs>
 
-			{/* Статистика */}
-			<div className='stats-grid-dashboard'>
-				<div className='stat-card-dashboard total'>
-					<div className='stat-icon'></div>
-					<div className='stat-value'>{stats.total}</div>
-					<div className='stat-label'>Всего технологий</div>
-				</div>
-				<div className='stat-card-dashboard completed'>
-					<div className='stat-icon'></div>
-					<div className='stat-value'>{stats.completed}</div>
-					<div className='stat-label'>Завершено</div>
-				</div>
-				<div className='stat-card-dashboard progress'>
-					<div className='stat-icon'></div>
-					<div className='stat-value'>{stats.inProgress}</div>
-					<div className='stat-label'>В процессе</div>
-				</div>
-				<div className='stat-card-dashboard not-started'>
-					<div className='stat-icon'></div>
-					<div className='stat-value'>{stats.notStarted}</div>
-					<div className='stat-label'>Не начато</div>
-				</div>
-			</div>
+			<TabPanel value={tabValue} index={0}>
+				<Grid container spacing={3}>
+					{[
+						{
+							label: 'Завершено',
+							value: stats.completed,
+							icon: <CheckCircleIcon color='success' />,
+						},
+						{
+							label: 'В процессе',
+							value: stats.inProgress,
+							icon: <ScheduleIcon color='warning' />,
+						},
+						{
+							label: 'Не начато',
+							value: stats.notStarted,
+							icon: <PendingIcon color='error' />,
+						},
+						{
+							label: 'Всего',
+							value: stats.total,
+							icon: <TrendingUpIcon color='info' />,
+						},
+					].map((item, i) => (
+						<Grid item xs={12} sm={6} md={3} key={i}>
+							<Card>
+								<CardContent>
+									<Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+										{item.icon}
+										<Typography sx={{ ml: 1 }} color='text.secondary'>
+											{item.label}
+										</Typography>
+									</Box>
+									<Typography variant='h4'>{item.value}</Typography>
+								</CardContent>
+							</Card>
+						</Grid>
+					))}
 
-			{/* Быстрые действия */}
-			<div className='quick-actions'>
-				<h2>Быстрые действия</h2>
-				<div className='action-buttons'>
-					<Link to='/add-technology' className='action-button add'>
-						Добавить технологию
-					</Link>
-					<Link to='/technologies' className='action-button view'>
-						Посмотреть все
-					</Link>
-					<Link to='/bulk-edit' className='action-button edit'>
-						Массовое редактирование
-					</Link>
-					<Link to='/import-export' className='action-button import'>
-						Импорт/Экспорт
-					</Link>
-				</div>
-			</div>
+					<Grid item xs={12}>
+						<Card>
+							<CardContent>
+								<Typography variant='h6' gutterBottom>
+									Общий прогресс
+								</Typography>
+								<Typography variant='h4' gutterBottom>
+									{completionPercentage}%
+								</Typography>
+								<LinearProgress
+									variant='determinate'
+									value={completionPercentage}
+									sx={{ height: 12, borderRadius: 6 }}
+								/>
+							</CardContent>
+						</Card>
+					</Grid>
+				</Grid>
+			</TabPanel>
 
-			{/* Последние технологии */}
-			{recentTechnologies.length > 0 && (
-				<div className='recent-technologies'>
-					<h2>Недавно добавленные</h2>
-					<div className='recent-list'>
-						{recentTechnologies.map(tech => (
-							<Link
-								key={tech.id}
-								to={`/technology/${tech.id}`}
-								className='recent-item'
-							>
-								<h3>{tech.title}</h3>
-								<p>{tech.description}</p>
-								<span className={`status status-${tech.status}`}>
-									{tech.status}
-								</span>
-							</Link>
-						))}
-					</div>
-				</div>
-			)}
-		</div>
+			<TabPanel value={tabValue} index={1}>
+				<Grid container spacing={3}>
+					{technologies.map(tech => (
+						<Grid item xs={12} sm={6} md={4} key={tech.id}>
+							<SimpleTechCard
+								{...tech}
+								category={tech.category || 'frontend'}
+								onStatusChange={updateStatus}
+							/>
+						</Grid>
+					))}
+				</Grid>
+			</TabPanel>
+		</Box>
 	)
 }
-
-export default Dashboard

@@ -1,20 +1,27 @@
-import { useState, useEffect } from 'react'
-import './DataImportExport.css'
+// src/pages/DataImportExport.jsx
+import React, { useState, useEffect } from 'react'
+import {
+	Container,
+	Typography,
+	Button,
+	Box,
+	Paper,
+	Alert,
+	List,
+	ListItem,
+	ListItemText,
+	Chip,
+} from '@mui/material'
 
-function DataImportExport() {
-	// состояние для списка технологий
+export default function DataImportExport() {
 	const [technologies, setTechnologies] = useState([])
-	// состояние для сообщений о статусе операций
 	const [status, setStatus] = useState('')
-	// состояние для перетаскивания файла
 	const [isDragging, setIsDragging] = useState(false)
 
-	// загрузка данных из localStorage при монтировании компонента
 	useEffect(() => {
 		loadFromLocalStorage()
 	}, [])
 
-	// функция загрузки данных из localStorage
 	const loadFromLocalStorage = () => {
 		try {
 			const saved = localStorage.getItem('technologies')
@@ -30,7 +37,6 @@ function DataImportExport() {
 		}
 	}
 
-	// функция сохранения данных в localStorage
 	const saveToLocalStorage = () => {
 		try {
 			localStorage.setItem('technologies', JSON.stringify(technologies))
@@ -42,30 +48,16 @@ function DataImportExport() {
 		}
 	}
 
-	// экспорт данных в JSON-файл
 	const exportToJSON = () => {
 		try {
-			// преобразуем данные в JSON-строку с форматированием
 			const dataStr = JSON.stringify(technologies, null, 2)
-			// создаем Blob объект из строки
 			const dataBlob = new Blob([dataStr], { type: 'application/json' })
-			// создаем временную ссылку для скачивания
 			const url = URL.createObjectURL(dataBlob)
 			const link = document.createElement('a')
+			link.download = 'technologies.json'
 			link.href = url
-			link.download = `technologies_${
-				new Date().toISOString().split('T')[0]
-			}.json`
-
-			// программно кликаем по ссылке для начала скачивания
-			document.body.appendChild(link)
 			link.click()
-			document.body.removeChild(link)
-
-			// освобождаем память
-			URL.revokeObjectURL(url)
-
-			setStatus('Данные экспортированы в JSON')
+			setStatus('Данные экспортированы в JSON файл')
 			setTimeout(() => setStatus(''), 3000)
 		} catch (error) {
 			setStatus('Ошибка экспорта данных')
@@ -73,176 +65,135 @@ function DataImportExport() {
 		}
 	}
 
-	// импорт данных из JSON-файла
-	const importFromJSON = event => {
-		const file = event.target.files[0]
-		if (!file) return
-
+	const handleFileUpload = file => {
 		const reader = new FileReader()
-
-		// обработчик завершения чтения файла
 		reader.onload = e => {
 			try {
-				const imported = JSON.parse(e.target.result)
-
-				// проверка что импортированные данные - это массив
-				if (!Array.isArray(imported)) {
-					throw new Error('Неверный формат данных')
+				const importedData = JSON.parse(e.target.result)
+				if (Array.isArray(importedData)) {
+					setTechnologies(importedData)
+					localStorage.setItem('technologies', JSON.stringify(importedData))
+					setStatus('Данные успешно импортированы')
+					setTimeout(() => setStatus(''), 3000)
+				} else {
+					setStatus('Неверный формат файла')
 				}
-
-				setTechnologies(imported)
-				setStatus(`Импортировано ${imported.length} технологий`)
-				setTimeout(() => setStatus(''), 3000)
 			} catch (error) {
-				setStatus('Ошибка импорта: неверный формат файла')
+				setStatus('Ошибка импорта данных')
 				console.error('Ошибка импорта:', error)
 			}
 		}
-
-		// запускаем асинхронное чтение файла как текста
 		reader.readAsText(file)
-		// сбрасываем значение input для возможности повторного импорта того же файла
-		event.target.value = ''
 	}
 
-	// обработчики drag-and-drop
 	const handleDragOver = e => {
 		e.preventDefault()
 		setIsDragging(true)
 	}
 
-	const handleDragLeave = () => {
-		setIsDragging(false)
-	}
+	const handleDragLeave = () => setIsDragging(false)
 
 	const handleDrop = e => {
 		e.preventDefault()
 		setIsDragging(false)
-
 		const file = e.dataTransfer.files[0]
 		if (file && file.type === 'application/json') {
-			// используем ту же логику чтения что и в importFromJSON
-			const reader = new FileReader()
-			reader.onload = event => {
-				try {
-					const imported = JSON.parse(event.target.result)
-					if (Array.isArray(imported)) {
-						setTechnologies(imported)
-						setStatus(`Импортировано ${imported.length} технологий`)
-						setTimeout(() => setStatus(''), 3000)
-					}
-				} catch (error) {
-					setStatus('Ошибка импорта: неверный формат файла')
-				}
-			}
-			reader.readAsText(file)
+			handleFileUpload(file)
 		} else {
-			setStatus('Пожалуйста, выберите JSON файл')
-			setTimeout(() => setStatus(''), 3000)
+			setStatus('Пожалуйста, перетащите JSON файл')
 		}
 	}
 
 	return (
-		<div className='page data-import-export'>
-			<h1>Импорт и экспорт данных</h1>
-			<p className='subtitle'>
-				Экспортируйте свои данные в JSON или импортируйте из файла
-			</p>
+		<Container maxWidth='lg' sx={{ py: 4 }}>
+			<Typography variant='h4' gutterBottom>
+				Импорт и Экспорт Данных
+			</Typography>
+			<Typography variant='body1' sx={{ mb: 3 }}>
+				Управляйте данными о технологиях: экспортируйте в JSON или импортируйте.
+			</Typography>
 
-			{/* статусное сообщение */}
 			{status && (
-				<div
-					className='status-message'
-					role='status'
-					aria-live='polite'
-					aria-atomic='true'
-				>
+				<Alert severity='info' sx={{ mb: 3 }}>
 					{status}
-				</div>
+				</Alert>
 			)}
 
-			{/* кнопки управления */}
-			<div className='controls'>
-				<button
+			<Box sx={{ display: 'flex', gap: 2, mb: 4 }}>
+				<Button
+					variant='contained'
 					onClick={exportToJSON}
 					disabled={technologies.length === 0}
-					className='btn-export'
-					aria-label='Экспортировать данные в JSON файл'
 				>
 					Экспорт в JSON
-				</button>
-
-				<label className='file-input-label'>
+				</Button>
+				<Button variant='outlined' component='label'>
 					Импорт из JSON
 					<input
 						type='file'
 						accept='.json'
-						onChange={importFromJSON}
-						style={{ display: 'none' }}
-						aria-label='Выберите JSON файл для импорта'
+						hidden
+						onChange={e =>
+							e.target.files[0] && handleFileUpload(e.target.files[0])
+						}
 					/>
-				</label>
-
-				<button
+				</Button>
+				<Button
+					variant='outlined'
 					onClick={saveToLocalStorage}
 					disabled={technologies.length === 0}
-					className='btn-save'
-					aria-label='Сохранить данные в браузер'
 				>
 					Сохранить локально
-				</button>
-
-				<button
-					onClick={loadFromLocalStorage}
-					className='btn-load'
-					aria-label='Загрузить данные из браузера'
-				>
+				</Button>
+				<Button variant='outlined' onClick={loadFromLocalStorage}>
 					Загрузить локально
-				</button>
-			</div>
+				</Button>
+			</Box>
 
-			{/* область drag-and-drop */}
-			<div
-				className={`drop-zone ${isDragging ? 'dragging' : ''}`}
+			<Paper
+				sx={{
+					p: 4,
+					textAlign: 'center',
+					bgcolor: isDragging ? 'action.hover' : 'background.paper',
+					border: '2px dashed',
+					borderColor: 'divider',
+					cursor: 'pointer',
+					mb: 4,
+				}}
 				onDragOver={handleDragOver}
 				onDragLeave={handleDragLeave}
 				onDrop={handleDrop}
-				role='region'
-				aria-label='Область для перетаскивания файлов'
 			>
-				<p> Перетащите JSON-файл сюда</p>
-				<p className='drop-zone-hint'>или используйте кнопку импорта выше</p>
-			</div>
+				<Typography variant='body1'>Перетащите JSON-файл сюда</Typography>
+				<Typography variant='body2' color='text.secondary'>
+					или используйте кнопку импорта выше
+				</Typography>
+			</Paper>
 
-			{/* список импортированных технологий */}
 			{technologies.length > 0 ? (
-				<div className='technologies-list'>
-					<h2>Загруженные технологии ({technologies.length})</h2>
-					<div className='technologies-grid'>
-						{technologies.map((tech, index) => (
-							<div key={index} className='tech-card'>
-								<h3>{tech.title}</h3>
-								<p className='tech-description'>{tech.description}</p>
-								<div className='tech-meta'>
-									<span className='tech-category'>{tech.category}</span>
-									<span className={`status status-${tech.status}`}>
-										{tech.status}
-									</span>
-								</div>
-							</div>
+				<>
+					<Typography variant='h5' gutterBottom>
+						Загруженные технологии ({technologies.length})
+					</Typography>
+					<List>
+						{technologies.map(tech => (
+							<ListItem key={tech.id}>
+								<ListItemText
+									primary={tech.title}
+									secondary={tech.description}
+								/>
+								<Chip label={tech.category} sx={{ mr: 1 }} />
+								<Chip label={tech.status} color='primary' />
+							</ListItem>
 						))}
-					</div>
-				</div>
+					</List>
+				</>
 			) : (
-				<div className='empty-state'>
-					<p>Нет данных для отображения</p>
-					<p className='hint'>
-						Импортируйте JSON файл или загрузите из localStorage
-					</p>
-				</div>
+				<Typography variant='body1' sx={{ textAlign: 'center' }}>
+					Нет данных для отображения. Импортируйте JSON файл или загрузите из
+					localStorage.
+				</Typography>
 			)}
-		</div>
+		</Container>
 	)
 }
-
-export default DataImportExport

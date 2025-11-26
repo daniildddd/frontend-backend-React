@@ -1,34 +1,54 @@
+// src/pages/Settings.jsx
 import React from 'react'
+import {
+	Container,
+	Typography,
+	TextField,
+	FormControlLabel,
+	Checkbox,
+	Button,
+	Paper,
+} from '@mui/material'
 
-function Settings() {
+export default function Settings() {
 	return (
-		<div className='settings-container'>
-			<h1> Настройки Приложения</h1>
-			<p>Управляйте своими предпочтениями и учетной записью.</p>
+		<Container maxWidth='md' sx={{ py: 4 }}>
+			<Paper elevation={4} sx={{ p: 4, borderRadius: 3 }}>
+				<Typography variant='h3' gutterBottom>
+					Настройки Приложения
+				</Typography>
+				<Typography variant='body1' paragraph>
+					Управляйте своими предпочтениями и учетной записью.
+				</Typography>
 
-			<section>
-				<h2>Профиль</h2>
-				<label>
-					Имя пользователя: <input type='text' defaultValue='ВашеИмя' />
-				</label>
-				<br />
-				<label>
-					Email: <input type='email' defaultValue='user@example.com' />
-				</label>
-			</section>
+				<Typography variant='h5' sx={{ mt: 4, mb: 2 }}>
+					Профиль
+				</Typography>
+				<TextField
+					fullWidth
+					label='Имя пользователя'
+					defaultValue='ВашеИмя'
+					sx={{ mb: 2 }}
+				/>
+				<TextField
+					fullWidth
+					label='Email'
+					type='email'
+					defaultValue='user@example.com'
+				/>
 
-			<section style={{ marginTop: '20px' }}>
-				<h2>Уведомления</h2>
-				<label>
-					<input type='checkbox' defaultChecked /> Получать email-уведомления
-				</label>
-			</section>
+				<Typography variant='h5' sx={{ mt: 4, mb: 2 }}>
+					Уведомления
+				</Typography>
+				<FormControlLabel
+					control={<Checkbox defaultChecked />}
+					label='Получать email-уведомления'
+				/>
 
-			<button style={{ marginTop: '30px', padding: '10px 20px' }}>
-				Сохранить Изменения
-			</button>
-		</div>
+				<Button variant='contained' size='large' sx={{ mt: 4 }}>
+					Сохранить Изменения
+				</Button>
+			</Paper>
+		</Container>
 	)
 }
-
-export default Settings
