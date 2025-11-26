@@ -1,0 +1,201 @@
+.dashboard-container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 20px;
+	font-family: 'Inter', sans-serif;
+}
+
+h1 {
+	font-size: 2.5rem;
+	font-weight: 700;
+	color: #333;
+	margin-bottom: 5px;
+}
+
+.dashboard-subtitle {
+	color: #666;
+	margin-bottom: 25px;
+	font-size: 1.1rem;
+}
+
+/* --- Progress Header Area (Top Gradient Background) --- */
+.progress-header-container {
+	background: linear-gradient(135deg, #6a82fb 0%, #fc5c7d 100%);
+	color: white;
+	padding: 30px 40px;
+	border-radius: 12px;
+	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+	margin-bottom: 30px;
+}
+
+.progress-header-container h2 {
+	font-size: 1.8rem;
+	margin-bottom: 5px;
+}
+
+.progress-header-container p {
+	font-size: 1rem;
+	opacity: 0.8;
+	margin-bottom: 20px;
+}
+
+/* --- Overall Progress Bar (Top) --- */
+.overall-progress-bar {
+	height: 10px;
+	background-color: rgba(255, 255, 255, 0.3);
+	border-radius: 5px;
+	overflow: hidden;
+}
+
+.overall-progress-fill {
+	height: 100%;
+	background-color: white;
+	transition: width 0.5s ease-in-out;
+}
+
+.overall-progress-text {
+	text-align: right;
+	font-weight: 600;
+	margin-top: 5px;
+	font-size: 0.9rem;
+}
+
+/* --- Status Cards (The 4 boxes) --- */
+.status-cards-grid {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 20px;
+	margin: 30px 0;
+}
+
+.status-card {
+	background-color: white;
+	padding: 20px;
+	border-radius: 10px;
+	text-align: center;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+	transition: transform 0.2s;
+	border: 1px solid #eee;
+}
+
+.status-card:hover {
+	transform: translateY(-3px);
+	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.status-card-value {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-bottom: 5px;
+}
+
+.status-card-label {
+	font-size: 0.9rem;
+	color: #666;
+}
+
+/* Specific Card Colors (Matching image) */
+.card-total {
+	border-left: 5px solid #66bb6a;
+	background-color: #f6fff8;
+} /* Green-ish */
+.card-completed {
+	border-left: 5px solid #81c784;
+	background-color: #f7fff7;
+} /* Lighter Green */
+.card-in-progress {
+	border-left: 5px solid #64b5f6;
+	background-color: #f7fbff;
+} /* Blue-ish */
+.card-not-started {
+	border-left: 5px solid #e57373;
+	background-color: #fff7f7;
+} /* Red-ish */
+
+/* --- Quick Actions (Bottom Section) --- */
+.quick-actions-container {
+	padding: 20px;
+	background-color: #f8f9fa;
+	border-radius: 12px;
+	margin-top: 30px;
+}
+
+.quick-actions-container h3 {
+	font-size: 1.5rem;
+	margin-bottom: 15px;
+	color: #333;
+}
+
+.quick-actions-buttons {
+	display: flex;
+	gap: 15px;
+	flex-wrap: wrap;
+}
+
+.action-button {
+	padding: 10px 20px;
+	border: none;
+	border-radius: 8px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: background-color 0.2s, transform 0.1s;
+	color: white;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	font-size: 1rem;
+}
+
+.action-button:hover {
+	transform: translateY(-1px);
+	box-shadow: 0 5px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Specific Button Colors */
+.btn-complete {
+	background-color: #4caf50;
+}
+.btn-complete:hover {
+	background-color: #43a047;
+}
+
+.btn-reset {
+	background-color: #fb8c00;
+}
+.btn-reset:hover {
+	background-color: #f57c00;
+}
+
+.btn-random {
+	background-color: #9c27b0;
+}
+.btn-random:hover {
+	background-color: #8e24aa;
+}
+
+.btn-export {
+	background-color: #03a9f4;
+}
+.btn-export:hover {
+	background-color: #039be5;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 992px) {
+	.status-cards-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (max-width: 576px) {
+	.status-cards-grid {
+		grid-template-columns: 1fr;
+	}
+	.quick-actions-buttons {
+		flex-direction: column;
+	}
+	.action-button {
+		width: 100%;
+	}
+	.progress-header-container {
+		padding: 20px;
+	}
+}
