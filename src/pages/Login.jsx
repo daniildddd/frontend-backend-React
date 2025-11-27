@@ -6,28 +6,26 @@ function Login({ onLogin }) {
 	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
 	const [error, setError] = useState('')
+
 	const navigate = useNavigate()
 	const location = useLocation()
 
-	// Получаем URL, с которого пользователь был перенаправлен
+	// Куда перенаправить после логина
 	const from = location.state?.from?.pathname || '/'
 
 	const handleSubmit = e => {
 		e.preventDefault()
 		setError('')
 
-		// Простая проверка (в реальном приложении это запрос к API)
+		// Простая заглушка вместо реального бэкенда
 		if (username === 'admin' && password === 'password') {
-			// Сохраняем в localStorage
 			localStorage.setItem('isLoggedIn', 'true')
 			localStorage.setItem('username', username)
 
-			// Вызываем колбэк для обновления состояния в App
-			onLogin(username)
+			onLogin(username) // передаём имя вверх в App
 
-			// Небольшая задержка для обновления состояния
+			// Небольшая задержка, чтобы состояние успело обновиться
 			setTimeout(() => {
-				// Перенаправляем на страницу, с которой пришли, или на главную
 				navigate(from, { replace: true })
 			}, 100)
 		} else {
@@ -39,9 +37,6 @@ function Login({ onLogin }) {
 		<div className='page login-page'>
 			<div className='login-container'>
 				<h1>Вход в систему</h1>
-				<p className='login-subtitle'>
-					Войдите для доступа к функциям управления технологиями
-				</p>
 
 				{error && (
 					<div className='error-banner' role='alert'>
@@ -87,7 +82,7 @@ function Login({ onLogin }) {
 					<p>
 						<strong>Тестовые данные:</strong>
 					</p>
-					<p>Имя пользователя: admin</p>
+					<p>Логин: admin</p>
 					<p>Пароль: password</p>
 				</div>
 			</div>
