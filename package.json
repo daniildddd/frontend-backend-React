@@ -13,10 +13,12 @@
 		"@emotion/styled": "^11.11.0"
 	},
 	"scripts": {
-		"start": "react-scripts start",
-		"build": "react-scripts build",
-		"test": "react-scripts test",
-		"eject": "react-scripts eject"
+		"dev": "vite",
+		"build": "vite build",
+		"lint": "eslint .",
+		"preview": "vite preview",
+		"gh:predeploy": "pnpm build",
+		"gh:deploy": "pnpm gh:predeploy && gh-pages -d dist"
 	},
 	"eslintConfig": {
 		"extends": [
