@@ -1,25 +1,36 @@
-// src/pages/AddTechnology.jsx
-import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import TechnologyForm from '../components/TechnologyForm'
-import { Container } from '@mui/material'
 
-export default function AddTechnology() {
+function AddTechnology({ showNotification }) {
 	const navigate = useNavigate()
 
 	const handleSave = formData => {
+		// Генерируем уникальный ID
 		const newId = Date.now()
+
 		const newTechnology = {
 			id: newId,
 			...formData,
 			status: 'not-started',
 		}
 
+		// Загружаем существующие данные
 		const saved = localStorage.getItem('technologies')
 		const technologies = saved ? JSON.parse(saved) : []
+
+		// Добавляем новую технологию
 		technologies.push(newTechnology)
 		localStorage.setItem('technologies', JSON.stringify(technologies))
 
+		// Показываем уведомление
+		if (showNotification) {
+			showNotification(
+				`Технология "${formData.title}" успешно добавлена`,
+				'success'
+			)
+		}
+
+		// Перенаправляем на страницу со списком
 		navigate('/technologies')
 	}
 
@@ -28,8 +39,10 @@ export default function AddTechnology() {
 	}
 
 	return (
-		<Container maxWidth='md' sx={{ py: 4 }}>
+		<div className='page'>
 			<TechnologyForm onSave={handleSave} onCancel={handleCancel} />
-		</Container>
+		</div>
 	)
 }
+
+export default AddTechnology

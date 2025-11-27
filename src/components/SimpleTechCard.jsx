@@ -1,5 +1,3 @@
-// src/components/SimpleTechCard.jsx
-import React from 'react'
 import {
 	Card,
 	CardContent,
@@ -10,14 +8,8 @@ import {
 	Box,
 } from '@mui/material'
 
-function SimpleTechCard({
-	id,
-	title,
-	description,
-	status,
-	category = 'frontend',
-	onStatusChange,
-}) {
+function SimpleTechCard({ technology, onStatusChange }) {
+	// Функция определения цвета чипа в зависимости от статуса
 	const getStatusColor = status => {
 		switch (status) {
 			case 'completed':
@@ -29,6 +21,7 @@ function SimpleTechCard({
 		}
 	}
 
+	// Функция получения текста статуса на русском языке
 	const getStatusText = status => {
 		switch (status) {
 			case 'completed':
@@ -40,34 +33,60 @@ function SimpleTechCard({
 		}
 	}
 
-	const handleStatusChange = newStatus => {
-		if (onStatusChange) onStatusChange(id, newStatus)
+	// Функция получения текста категории
+	const getCategoryText = category => {
+		const categories = {
+			frontend: 'Frontend',
+			backend: 'Backend',
+			database: 'База данных',
+			devops: 'DevOps',
+			other: 'Другое',
+		}
+		return categories[category] || category
 	}
 
 	return (
-		<Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+		<Card
+			sx={{
+				maxWidth: 345,
+				height: '100%',
+				display: 'flex',
+				flexDirection: 'column',
+			}}
+		>
 			<CardContent sx={{ flexGrow: 1 }}>
-				<Typography variant='h6' component='h3' gutterBottom>
-					{title}
+				{/* Заголовок карточки */}
+				<Typography variant='h5' component='h2' gutterBottom>
+					{technology.title}
 				</Typography>
-				<Typography variant='body2' color='text.secondary' paragraph>
-					{description}
+
+				{/* Описание технологии */}
+				<Typography variant='body2' color='text.secondary' sx={{ mb: 2 }}>
+					{technology.description}
 				</Typography>
-				<Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mt: 2 }}>
-					<Chip label={category} variant='outlined' size='small' />
+
+				{/* Чипы с категорией и статусом */}
+				<Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
 					<Chip
-						label={getStatusText(status)}
-						color={getStatusColor(status)}
+						label={getCategoryText(technology.category)}
+						variant='outlined'
+						size='small'
+					/>
+					<Chip
+						label={getStatusText(technology.status)}
+						color={getStatusColor(technology.status)}
 						size='small'
 					/>
 				</Box>
 			</CardContent>
+
+			{/* Кнопки действий */}
 			<CardActions>
-				{status !== 'completed' && (
+				{technology.status !== 'completed' && (
 					<Button
 						size='small'
 						variant='contained'
-						onClick={() => handleStatusChange('completed')}
+						onClick={() => onStatusChange(technology.id, 'completed')}
 					>
 						Завершить
 					</Button>
@@ -76,12 +95,15 @@ function SimpleTechCard({
 					size='small'
 					variant='outlined'
 					onClick={() =>
-						handleStatusChange(
-							status === 'in-progress' ? 'not-started' : 'in-progress'
+						onStatusChange(
+							technology.id,
+							technology.status === 'in-progress'
+								? 'not-started'
+								: 'in-progress'
 						)
 					}
 				>
-					{status === 'in-progress' ? 'Приостановить' : 'Начать'}
+					{technology.status === 'in-progress' ? 'Приостановить' : 'Начать'}
 				</Button>
 			</CardActions>
 		</Card>

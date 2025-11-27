@@ -1,100 +1,111 @@
 import { Link, useLocation } from 'react-router-dom'
-import { Switch, FormControlLabel, Box } from '@mui/material'
 
-function Navigation({ isLoggedIn, username, onLogout, toggleTheme, darkMode }) {
+function Navigation({ isLoggedIn, username, onLogout }) {
 	const location = useLocation()
-	const isActive = path => location.pathname === path
+
+	const isLinkActive = path => location.pathname === path
 
 	return (
-		<Box sx={{ bgcolor: 'background.paper', boxShadow: 1, mb: 4 }}>
-			<Box
-				sx={{
-					display: 'flex',
-					justifyContent: 'space-between',
-					alignItems: 'center',
-					p: 2,
-				}}
-			>
-				{/* Лого */}
-				<Box>
-					<Link to='/' style={{ textDecoration: 'none', color: 'inherit' }}>
-						<h2>Трекер технологий</h2>
+		<nav className='main-navigation'>
+			<div className='nav-brand'>
+				<Link to='/'>
+					<h2>Трекер технологий</h2>
+				</Link>
+			</div>
+			<ul className='nav-menu'>
+				<li>
+					<Link to='/' className={isLinkActive('/') ? 'active' : ''}>
+						Главная
 					</Link>
-				</Box>
+				</li>
+				<li>
+					<Link to='/about' className={isLinkActive('/about') ? 'active' : ''}>
+						О проекте
+					</Link>
+				</li>
 
-				{/* Навигация */}
-				<Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-					{isLoggedIn && (
-						<>
+				{/* Показываем эти ссылки только авторизованным пользователям */}
+				{isLoggedIn && (
+					<>
+						<li>
 							<Link
 								to='/dashboard'
-								className={isActive('/dashboard') ? 'active' : ''}
+								className={isLinkActive('/dashboard') ? 'active' : ''}
 							>
 								Панель
 							</Link>
-
+						</li>
+						<li>
 							<Link
 								to='/technologies'
-								className={isActive('/technologies') ? 'active' : ''}
+								className={isLinkActive('/technologies') ? 'active' : ''}
 							>
 								Технологии
 							</Link>
-
+						</li>
+						<li>
 							<Link
 								to='/add-technology'
-								className={isActive('/add-technology') ? 'active' : ''}
+								className={isLinkActive('/add-technology') ? 'active' : ''}
 							>
 								Добавить
 							</Link>
-
+						</li>
+						<li>
+							<Link
+								to='/bulk-edit'
+								className={isLinkActive('/bulk-edit') ? 'active' : ''}
+							>
+								Массовое ред.
+							</Link>
+						</li>
+						<li>
 							<Link
 								to='/statistics'
-								className={isActive('/statistics') ? 'active' : ''}
+								className={isLinkActive('/statistics') ? 'active' : ''}
 							>
 								Статистика
 							</Link>
-
-							<Link
-								to='/bulk-edit'
-								className={isActive('/bulk-edit') ? 'active' : ''}
-							>
-								Массовое редактирование
-							</Link>
-
+						</li>
+						<li>
 							<Link
 								to='/import-export'
-								className={isActive('/import-export') ? 'active' : ''}
+								className={isLinkActive('/import-export') ? 'active' : ''}
 							>
 								Импорт/Экспорт
 							</Link>
-
+						</li>
+						<li>
 							<Link
 								to='/settings'
-								className={isActive('/settings') ? 'active' : ''}
+								className={isLinkActive('/settings') ? 'active' : ''}
 							>
 								Настройки
 							</Link>
-						</>
-					)}
+						</li>
+					</>
+				)}
 
-					{/* Тёмная тема */}
-					<FormControlLabel
-						control={<Switch checked={darkMode} onChange={toggleTheme} />}
-						label='Тёмная тема'
-					/>
-
-					{/* Логин/Логаут */}
-					{isLoggedIn ? (
-						<Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-							<span>{username}</span>
-							<button onClick={onLogout}>Выйти</button>
-						</Box>
-					) : (
-						<Link to='/login'>Войти</Link>
-					)}
-				</Box>
-			</Box>
-		</Box>
+				{/* Кнопка входа/выхода */}
+				{isLoggedIn ? (
+					<li className='user-menu'>
+						<span className='username'>{username}</span>
+						<button onClick={onLogout} className='logout-btn'>
+							Выйти
+						</button>
+					</li>
+				) : (
+					<li>
+						<Link
+							to='/login'
+							className={`login-link ${isLinkActive('/login') ? 'active' : ''}`}
+						>
+							Войти
+						</Link>
+					</li>
+				)}
+			</ul>
+		</nav>
 	)
 }
 

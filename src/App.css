@@ -158,8 +158,10 @@ body {
 .page p {
 	font-size: 16px;
 	line-height: 1.6;
-	color: #666;
 	margin-bottom: 20px;
+	display: block;
+	margin: 0 auto;
+	width: max-content;
 }
 
 /* ==================== ДОМАШНЯЯ СТРАНИЦА ==================== */
